@@ -8,6 +8,10 @@ public class FingersBeatGameManager : MonoBehaviour
 
     [SerializeField] private TapFieldBehaviour tapFieldPrefab;
 
+    [SerializeField]
+    private List<Color32> colorsActive;
+    [SerializeField]
+    private List<Color32> colors;
 
     [SerializeField] private float spawnSpeed = 15f;
     private float timeToNextSpawn = 5f;
