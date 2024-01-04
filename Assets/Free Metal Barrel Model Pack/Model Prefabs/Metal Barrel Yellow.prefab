@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6400000}
   m_Layer: 0
   m_Name: Metal Barrel Yellow
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 4.055059, y: 1.260375, z: 45.137535}
-  m_LocalScale: {x: 3.3400521, y: 3.340054, z: 4.3815503}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 10, y: 10, z: 13.118209}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

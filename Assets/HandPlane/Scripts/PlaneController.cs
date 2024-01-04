@@ -25,15 +25,13 @@ public class PlaneController : MonoBehaviour
     {
         Instance = this;
     }
-
-    // Start is called before the first frame update
+    
     void Start()
     {
         
         startRotation = transform.rotation.eulerAngles;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         PlaneTilt();
@@ -42,7 +40,6 @@ public class PlaneController : MonoBehaviour
     public LeapServiceProvider leapServiceProvider;
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log("Entered trigger with " + other.gameObject.name);
         onPlaneCollision.Invoke();
         GetComponent<Animator>().SetTrigger("Collision");
     }
@@ -70,21 +67,20 @@ public class PlaneController : MonoBehaviour
                 var currentLocalEulerY = transform.localEulerAngles.y;
 
                 
-                
-                //Calculating these values once to avoid repetition in the conditions
+           
                 float angleDifference = Mathf.Abs(currentLocalEulerY - yaw);
 
-                if (rotateAngleY > 0 && angleDifference < 20) // right rotation boundary
+                if (rotateAngleY > 0 && angleDifference < 20)
                 {
                     Debug.Log("Rotate right Limit Reached");
                 }
-                else if (rotateAngleY < 0 && angleDifference > 280) // left rotation boundary
+                else if (rotateAngleY < 0 && angleDifference > 280)
                 {
                     Debug.Log("Rotate left Limit Reached");
                 }
                 else
                 {
-                    RotatePlane(new Vector3(0, rotateAngleY, 0)); // Rotate the object to follow the palm's yaw
+                    RotatePlane(new Vector3(0, rotateAngleY, 0));
                 }
             }
 
@@ -105,8 +101,6 @@ public class PlaneController : MonoBehaviour
             }
             
             var shiftX = transform.position.x - ((transform.rotation.eulerAngles.y - startRotation.y) ) * Time.deltaTime * speed;
-            // Debug.Log(transform.rotation.eulerAngles.y - startRotation.y);
-            // Debug.Log("shiftX: " + shiftX);
             transform.position = new Vector3(shiftX, transform.position.y , transform.position.z);
         }else if(transform.rotation.eulerAngles.y < startRotation.y)
 
@@ -116,12 +110,8 @@ public class PlaneController : MonoBehaviour
                 return;
             }
             var shiftX = transform.position.x + ((startRotation.y - transform.rotation.eulerAngles.y)) * Time.deltaTime * speed;
-            // Debug.Log(transform.rotation.eulerAngles.y - startRotation.y);
-            // Debug.Log("shiftX: " + shiftX);
             transform.position = new Vector3(shiftX, transform.position.y , transform.position.z); 
         }
-            
-            
-        // transform.position = pos;
+        
     }
 }

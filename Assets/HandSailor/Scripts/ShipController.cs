@@ -8,7 +8,8 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     public LeapServiceProvider leapServiceProvider;
-    public float speed = 5f;
+    public float speed = 1f;
+    
     private Hand _currentHand;
     private Arm _currentArm;
     [SerializeField] private float _previousWristRotationAngle;
@@ -28,6 +29,7 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
+        if(ShipGameManager.Instance.isPaused) return;
         Frame currentFrame = leapServiceProvider.CurrentFrame;
         if (currentFrame != null && currentFrame.Hands.Count > 0)
         {
@@ -36,17 +38,15 @@ public class ShipController : MonoBehaviour
 
             if (_previousWristRotationAngle == 0)
             {
-                // _previousWristRotationAngle = _currentArm.Rotation.eulerAngles.z;
                 _previousWristRotationAngle = Vector2.Angle(_currentHand.PalmPosition, _currentArm.WristPosition);
             }
             else
             {
-                // currentWristRotationAngle = _currentArm.Rotation.eulerAngles.z;
                 currentWristRotationAngle = Vector2.Angle(_currentHand.PalmPosition, _currentArm.WristPosition);
-                if (currentWristRotationAngle < 20 && _previousWristRotationAngle > 340)
+                if (currentWristRotationAngle < 60 && _previousWristRotationAngle > 300)
                 {
                     rotationDifference = 360 - _previousWristRotationAngle + currentWristRotationAngle;
-                }else if (currentWristRotationAngle > 340 && _previousWristRotationAngle < 20)
+                }else if (currentWristRotationAngle > 300 && _previousWristRotationAngle < 60)
                 {
                     rotationDifference = _previousWristRotationAngle + 360 - currentWristRotationAngle;
                 }
@@ -59,11 +59,30 @@ public class ShipController : MonoBehaviour
             }
             
             var newPos = transform.position;
-            newPos.x += 1 * speed * rotationDifference;
+            newPos.x -= 1 * speed * rotationDifference * 1.5f;
             transform.position = newPos;
         }
 
        
+    }
+
+    public void OnShipCollision()
+    {
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("obstacle"))
+        {
+            ShipGameManager.Instance.OnShipCollision();
+            other.gameObject.SetActive(false);
+           
+        }else if (other.CompareTag("bonus"))
+        {
+            ShipGameManager.Instance.AddScore();
+        }
+        Destroy(other.gameObject);
     }
 
 
@@ -77,12 +96,10 @@ public class ShipController : MonoBehaviour
 
             if (_previousWristRotationAngle == 0)
             {
-                // _previousWristRotationAngle = _currentArm.Rotation.eulerAngles.z;
                 _previousWristRotationAngle = Vector2.Angle(_currentHand.PalmPosition, _currentArm.WristPosition);
             }
             else
             {
-                // currentWristRotationAngle = _currentArm.Rotation.eulerAngles.z;
                 currentWristRotationAngle = Vector2.Angle(_currentHand.PalmPosition, _currentArm.WristPosition);
                 rotationDifference = currentWristRotationAngle - _previousWristRotationAngle;
 
@@ -99,7 +116,6 @@ public class ShipController : MonoBehaviour
                     {
                         _rotationCounter++;
                         _cumulativeRotation %= 360f;
-                        Debug.Log("Wrist Rotations: " + _rotationCounter);
                     }
                 }
 
@@ -108,12 +124,6 @@ public class ShipController : MonoBehaviour
 
         }
     }
-// [SerializeField] private Vector3 point;
-    //
-    // private void OnDrawGizmosSelected()
-    // {
-    //     Gizmos.DrawCube(point, new Vector3(1, 1, 1));
-    // }
 
     void MoveShip()
     {
@@ -124,56 +134,5 @@ public class ShipController : MonoBehaviour
     }
 
 }
-
-// public float rotationThreshold = 360.0f; // angle threshold for counting full turns
-    // public int turnCount = 0; // counter for full turns
-    // public bool clockwiseOnly = false; // if true, count only clockwise turns
-    //
-    // private LeapProvider _leapProvider;
-    // private HandModel _handModel;
-    // private Quaternion _previousWristRotation;
-    //
-    // [SerializeField] private float accumulatedAngle;
-    //
-    // void Start () {
-    //     _leapProvider = FindObjectOfType<LeapProvider>() as LeapProvider;
-    //     _handModel = GetComponent<HandModel>();
-    //     _previousWristRotation = Quaternion.identity;
-    // }
-    //
-    // void Update () {
-    //     // get the hand from the Leap Motion device
-    //     Hand hand = _leapProvider.CurrentFrame.Hands[0];
-    //
-    //     if (hand != null) {
-    //         // get the wrist rotation
-    //         Quaternion wristRotation = hand.Basis.rotation;
-    //
-    //         // calculate the rotation delta based on the change in wrist rotation
-    //         Quaternion rotationDelta = wristRotation * Quaternion.Inverse(_previousWristRotation);
-    //         rotationDelta.ToAngleAxis(out float angle, out Vector3 axis);
-    //
-    //         // // calculate the accumulated angle of rotation around the wrist's axis
-    //         float dotProduct =  Vector3.Dot(axis, hand.Arm.Direction);
-    //         if (dotProduct < 0.0f) {
-    //             angle = -angle;
-    //         }
-    //         // if (rotationDelta. < Quaternion.identity)
-    //         // {
-    //         //     angle = -angle;
-    //         // }
-    //
-    //         accumulatedAngle += angle;
-    //         // accumulatedAngle = Mathf.Repeat(accumulatedAngle + angle, 360.0f);
-    //
-    //         // check if a full turn has been completed
-    //         if (accumulatedAngle >= rotationThreshold) {
-    //             turnCount++;
-    //             accumulatedAngle -= rotationThreshold;
-    //         }
-    //
-    //         _previousWristRotation = wristRotation;
-    //     }
-    // }
 
 

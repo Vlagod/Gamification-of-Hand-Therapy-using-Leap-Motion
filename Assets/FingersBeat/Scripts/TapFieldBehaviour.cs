@@ -26,13 +26,13 @@ public class TapFieldBehaviour : MonoBehaviour
         rectTransform.sizeDelta = sizeDelta;
         this.targetFingerIndex = fingerIndex;
     }
-    // Start is called before the first frame update
+   
     void Start()
     {
         leapController = FindObjectOfType<LeapServiceProvider>().GetLeapController();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         Vector2 position = transform.position;
@@ -54,11 +54,7 @@ public class TapFieldBehaviour : MonoBehaviour
         }
         Hand hand = frame.Hands[0];
         Finger indexFinger = hand.Fingers[targetFingerIndex];
-        if (targetFingerIndex == 1)
-        {
-            Debug.Log("tip: " + indexFinger.TipPosition.y);
-            Debug.Log("hand: " + hand.PalmPosition.y);
-        }
+      
 
         if (indexFinger.TipPosition.y < hand.PalmPosition.y - loweredThreshold)
         {
@@ -67,8 +63,6 @@ public class TapFieldBehaviour : MonoBehaviour
                 fingerLowered = true;
                 image.color = Color.red;
                 
-                // The index finger has been lowered down
-                Debug.Log("Index finger lowered down on " + gameObject.name);
             }
         }
         else

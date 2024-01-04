@@ -23,6 +23,7 @@ namespace QuantumTek.SimpleMenu
         public void Save()
         {
             if (!reference || settingName.Length == 0) return;
+            Debug.Log("reference.value" + reference.value);
             PlayerPrefs.SetFloat(settingName, reference.value);
             PlayerPrefs.Save();
         }
