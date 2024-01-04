@@ -1,2 +1,5 @@
 Gamification of Hand Therapy using Leap Motion
-Vladislav Konstantinov 193598IADB
+
+Author: Vladislav Konstantinov 193598IADB
+Supervisor: Yevhen Bondarenko
+
